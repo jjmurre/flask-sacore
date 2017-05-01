@@ -1,4 +1,4 @@
-from flask import current_app
+# from flask import current_app
 from sqlalchemy import create_engine
 
 # Find the stack on which we want to store the database connection.
@@ -26,7 +26,7 @@ class SACore(object):
             self.init_app(app)
 
     def init_app(self, app):
-        app.engine = create_engine(self.dsn)
+        self.engine = create_engine(self.dsn)
         # Use the newstyle teardown_appcontext if it's available,
         # otherwise fall back to the request context
         if hasattr(app, 'teardown_appcontext'):
@@ -35,7 +35,7 @@ class SACore(object):
             app.teardown_request(self.teardown)
 
     def connect(self):
-        connection = current_app.engine.connect()
+        connection = self.engine.connect()
         transaction = connection.begin()
         return SAConnection(connection, transaction)
 
