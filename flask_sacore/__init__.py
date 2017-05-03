@@ -42,18 +42,21 @@ class SACore(object):
     def teardown(self, exception):
         ctx = stack.top
         if hasattr(ctx, 'sacore_db'):
-            transaction = ctx.sacore_db.transaction
-            if transaction.is_active:
-                if exception is not None:
-                    ctx.sacore_db.transaction.rollback()
-                else:
-                    ctx.sacore_db.transaction.commit()
-            ctx.sacore_db.connection.close()
+            for dsn, connection in ctx.sacore_db.items():
+                transaction = connection.transaction
+                if transaction.is_active:
+                    if exception is not None:
+                        transaction.rollback()
+                    else:
+                        transaction.commit()
+                ctx.sacore_db[dsn].connection.close()
 
     @property
     def con(self):
         ctx = stack.top
         if ctx is not None:
             if not hasattr(ctx, 'sacore_db'):
-                ctx.sacore_db = self.connect()
-            return ctx.sacore_db.connection
+                ctx.sacore_db = {}
+            if self.dsn not in ctx.sacore_db:
+                ctx.sacore_db[self.dsn] = self.connect()
+            return ctx.sacore_db[self.dsn].connection
