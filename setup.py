@@ -8,7 +8,7 @@ from setuptools import setup
 
 setup(
     name='Flask-SACore',
-    version='0.0.3',
+    version='0.0.4',
     url='https://github.com/jjmurre/flask-sacore',
     license='MIT',
     author='Jan Murre',
