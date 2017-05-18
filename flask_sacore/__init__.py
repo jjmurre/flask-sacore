@@ -19,14 +19,16 @@ class SAConnection(object):
 
 class SACore(object):
 
-    def __init__(self, dsn, app=None):
+    def __init__(self, dsn, app=None, **kwargs):
         self.app = app
         self.dsn = dsn
+        self.engine_params = dict(pool_recycle=25 * 60)
+        self.engine_params.update(kwargs)
         if app is not None:
             self.init_app(app)
 
     def init_app(self, app):
-        self.engine = create_engine(self.dsn)
+        self.engine = create_engine(self.dsn, **self.engine_params)
         # Use the newstyle teardown_appcontext if it's available,
         # otherwise fall back to the request context
         if hasattr(app, 'teardown_appcontext'):
