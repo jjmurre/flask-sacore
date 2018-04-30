@@ -8,7 +8,7 @@ from setuptools import setup
 
 setup(
     name='Flask-SACore',
-    version='0.0.4',
+    version='0.0.5',
     url='https://github.com/jjmurre/flask-sacore',
     license='MIT',
     author='Jan Murre',
@@ -20,7 +20,7 @@ setup(
     include_package_data=True,
     platforms='any',
     install_requires=[
-        'Flask>=0.10.1',
+        'Flask>=0.10.1,<=0.12.2',
         'SQLAlchemy'
     ],
     classifiers=[
