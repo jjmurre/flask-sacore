@@ -22,7 +22,7 @@ class SACore(object):
     def __init__(self, dsn, app=None, **kwargs):
         self.app = app
         self.dsn = dsn
-        self.engine_params = dict(pool_recycle=25 * 60)
+        self.engine_params = dict(pool_recycle=10 * 60)
         self.engine_params.update(kwargs)
         if app is not None:
             self.init_app(app)
